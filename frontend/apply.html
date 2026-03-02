@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Membership Application</h2>
+    <input type="text" id="username" placeholder="Desired Username">
+    <input type="password" id="password" placeholder="Desired Password">
+    <textarea id="reason" placeholder="Reason for joining"></textarea>
+    <button id="apply-btn">Submit Application</button>
+    <p id="status" style="color:red;"></p>
+</div>
+
+<script>
+document.getElementById("apply-btn").onclick = async () => {
+    const res = await fetch("/api/m/submit-form", {
+        method:"POST",
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+            reason: document.getElementById("reason").value
+        })
+    });
+    const data = await res.json();
+    document.getElementById("status").innerText = data.status || data.error;
+}
+</script>
+</body>
+</html>

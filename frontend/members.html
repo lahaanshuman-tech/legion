@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Members</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Members</h2>
+    <ul id="members-list"></ul>
+</div>
+
+<script>
+async function loadMembers(){
+    const res = await fetch("/api/m/mem-list");
+    const data = await res.json();
+    const ul = document.getElementById("members-list");
+    data.members.forEach(u => {
+        const li = document.createElement("li");
+        li.innerText = u;
+        ul.appendChild(li);
+    });
+}
+loadMembers();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="login-btn">Login</button>
+    <p id="status" style="color:red;"></p>
+</div>
+
+<script>
+document.getElementById("login-btn").onclick = async () => {
+    const res = await fetch("/api/login", {
+        method: "POST",
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        })
+    });
+    const data = await res.json();
+    if(data.status === "ok") window.location.href="/frontend/dashboard.html";
+    else document.getElementById("status").innerText = data.error;
+}
+</script>
+</body>
+</html>

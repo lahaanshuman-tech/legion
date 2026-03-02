@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>Admin Panel - Applications</h2>
+    <table id="app-table">
+        <tr>
+            <th>Username</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </table>
+</div>
+
+<script>
+async function loadApps() {
+    const res = await fetch("/api/admin/application-list");
+    const data = await res.json();
+    const table = document.getElementById("app-table");
+    data.applications.forEach(app => {
+        const row = table.insertRow();
+        row.insertCell(0).innerText = app.username;
+        row.insertCell(1).innerText = app.reason;
+        row.insertCell(2).innerText = app.status;
+        const actions = row.insertCell(3);
+        if(app.status==="pending"){
+            const approveBtn = document.createElement("button");
+            approveBtn.innerText = "Approve";
+            approveBtn.onclick = () => approveApp(app.username);
+            const rejectBtn = document.createElement("button");
+            rejectBtn.innerText = "Reject";
+            rejectBtn.onclick = () => rejectApp(app.username);
+            actions.appendChild(approveBtn);
+            actions.appendChild(rejectBtn);
+        } else {
+            actions.innerText = "-";
+        }
+    });
+}
+
+async function approveApp(username){
+    await fetch("/api/admin/approve-app", {method:"POST", headers:{'Content-Type':'application/json'}, body:JSON.stringify({username})});
+    location.reload();
+}
+
+async function rejectApp(username){
+    await fetch("/api/admin/reject-app", {method:"POST", headers:{'Content-Type':'application/json'}, body:JSON.stringify({username})});
+    location.reload();
+}
+
+loadApps();
+</script>
+</body>
+</html>

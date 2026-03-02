@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter Site</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container">
+    <h2>Enter Site Password</h2>
+    <input type="password" id="password" placeholder="Enter password">
+    <button id="submit-btn">Enter</button>
+    <p id="status" style="color:red;"></p>
+</div>
+
+<script>
+document.getElementById("submit-btn").onclick = async () => {
+    const pwd = document.getElementById("password").value;
+
+    const res = await fetch("/api/uni-pass", {
+        method: "POST",
+        headers: {'Content-Type':'application/json'},
+        credentials: "include",   // ⭐⭐⭐ CRITICAL LINE
+        body: JSON.stringify({password: pwd})
+    });
+
+    const data = await res.json();
+
+    if (data.status === "ok") {
+        window.location.href = "/";
+    } else {
+        document.getElementById("status").innerText = "Incorrect password";
+    }
+}
+</script>
+</body>
+</html>
