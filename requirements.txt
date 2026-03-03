@@ -5,3 +5,4 @@ python-dotenv
 gunicorn
 eventlet
 flask_sqlalchemy
+psycopg2
