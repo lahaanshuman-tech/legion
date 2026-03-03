@@ -4,3 +4,4 @@ flask-socketio
 python-dotenv
 gunicorn
 eventlet
+flask_sqlalchemy
